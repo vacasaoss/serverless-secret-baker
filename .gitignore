@@ -1,0 +1,12 @@
+# package directories
+node_modules
+
+# Serverless directories
+.serverless
+.vscode/
+
+# Other
+package-lock.json
+cc-test-reporter
+coverage/
+.nyc_output/

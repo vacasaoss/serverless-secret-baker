@@ -1,0 +1,26 @@
+service: aws-nodejs # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: us-west-2
+  environmentSecrets:
+    MYSECRET: test123
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - kms:*
+      Resource:
+        - "*" # <--------Please put your own KMS Key Arn here.
+
+plugins:
+  localPath: "../"
+  modules:
+    - index
+
+functions:
+  test-node:
+    handler: handler.hello
+  test-python:
+    runtime: python3.7
+    handler: handler.hello
