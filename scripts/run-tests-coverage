@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+# Install cc reporter
+if [ -z "${TEST_REPORTER_DOWNLOAD_URL}" ]; then
+    echo "Must specify 'TEST_REPORTER_DOWNLOAD_URL' environment variable"
+    exit 1;
+fi
+curl -L ${TEST_REPORTER_DOWNLOAD_URL} > ./cc-test-reporter
+chmod +x ./cc-test-reporter
+
+# Initialize Reporter
+./cc-test-reporter before-build
+
+# Run tests
+EXIT_STATUS=0
+npm run test-coverage || EXIT_STATUS=$?
+
+# convert coverage
+# upload coverage
+./cc-test-reporter after-build \
+  -t lcov \
+  --exit-code ${EXIT_STATUS} \
+  ./coverage/lcov.info
+
