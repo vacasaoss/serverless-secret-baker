@@ -1,11 +1,11 @@
 # serverless-secret-baker
 
-[CircleCI Build](https://circleci.com/gh/Vacasa/serverless-secret-baker)
+[![CircleCI](https://circleci.com/gh/vacasaoss/serverless-secret-baker.svg?style=svg)](https://circleci.com/gh/vacasaoss/serverless-secret-baker)
 
-
+<!-- TODO: Put these back in the new org once setup.
 [![Maintainability](https://api.codeclimate.com/v1/badges/4b8b964c37b372f83c7c/maintainability)](https://codeclimate.com/repos/5cafbaaf70f43a029d0003c1/maintainability)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/4b8b964c37b372f83c7c/test_coverage)](https://codeclimate.com/repos/5cafbaaf70f43a029d0003c1/test_coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4b8b964c37b372f83c7c/test_coverage)](https://codeclimate.com/repos/5cafbaaf70f43a029d0003c1/test_coverage) -->
 
 A Serverless Framework Plugin for secure, performant, and deterministic secret
 management.
@@ -70,4 +70,3 @@ This plugin addresses these concerns by focusing on:
 1. **Security:** Secrets should _always_ be encrypted at rest and in transit. The secrets are stored in Parameter Store using a custom KMS CMK. The only time it is decrypted is at lambda invocation.
 2. **Performance:** Minimize external dependencies and API calls. The secrets are retrieved directly from KMS. There is no runtime dependency on Parameter Store or Secrets Manager. In addition, the secret can be cached in the Lambda global scope so only a single API call per warmed up lambda is needed.
 3. **Deterministic State:** Complex cache invalidation strategies are not needed. Because the ciphertext is bundled with the lambda at deploy time the secrets can be modified at the source in AWS Parameter Store without effecting the runtime state. In order to apply the new secrets, a new deployment of the Lambdas is required allowing it to go through a CI/CD pipeline to catch any potential errors with secrets and to ensure that _all_ the lambdas get the new secret at the same time.
-  
