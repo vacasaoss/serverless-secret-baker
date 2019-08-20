@@ -26,7 +26,7 @@ class ServerlessSecretBaker {
   }
 
   async writeEnvironmentSecretToFile() {
-    const providerSecrets = this.serverless.service.provider.environmentSecrets;
+    const providerSecrets = this.serverless.service.provider.environmentSecrets || {};
     const secrets = {};
 
     for (const name of Object.keys(providerSecrets)) {

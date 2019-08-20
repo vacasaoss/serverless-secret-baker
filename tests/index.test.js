@@ -66,6 +66,25 @@ describe("ServerlessSecretBaker", () => {
     expect(fs.unlinkSync).not.to.have.been.calledWith(SECRETS_FILE);
   });
 
+  describe("Without Secrets", () => {
+    let serverless;
+    let bakedGoods;
+
+    beforeEach(() => {
+      serverless = makeServerless();
+      delete serverless.service.provider.environmentSecrets;
+      bakedGoods = new ServerlessSecretBaker(serverless);
+    });
+
+    it('should write an empty json object to the output file.', async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      const secretsJson = fs.writeFileAsync.firstCall.args[1];
+      const secrets = JSON.parse(secretsJson);
+
+      expect(secrets).to.be.empty;
+    });
+  });
+
   describe("With Secrets", () => {
     const expectedSecretName = "MY_SECRET";
     const expectedParameterStoreKey = "PARAMETER STORE KEY";
