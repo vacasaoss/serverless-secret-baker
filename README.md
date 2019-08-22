@@ -1,11 +1,6 @@
 # serverless-secret-baker
 
-[![CircleCI](https://circleci.com/gh/vacasaoss/serverless-secret-baker.svg?style=svg)](https://circleci.com/gh/vacasaoss/serverless-secret-baker)
-
-<!-- TODO: Put these back in the new org once setup.
-[![Maintainability](https://api.codeclimate.com/v1/badges/4b8b964c37b372f83c7c/maintainability)](https://codeclimate.com/repos/5cafbaaf70f43a029d0003c1/maintainability)
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/4b8b964c37b372f83c7c/test_coverage)](https://codeclimate.com/repos/5cafbaaf70f43a029d0003c1/test_coverage) -->
+[![CircleCI](https://circleci.com/gh/vacasaoss/serverless-secret-baker.svg?style=svg)](https://circleci.com/gh/vacasaoss/serverless-secret-baker) [![Maintainability](https://api.codeclimate.com/v1/badges/40209674df1a65e0112b/maintainability)](https://codeclimate.com/github/vacasaoss/serverless-secret-baker/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/40209674df1a65e0112b/test_coverage)](https://codeclimate.com/github/vacasaoss/serverless-secret-baker/test_coverage)
 
 A Serverless Framework Plugin for secure, performant, and deterministic secret
 management.
