@@ -1,7 +1,7 @@
 {
   "name": "serverless-secret-baker",
-  "version": "0.0.1",
-  "description": "Serverless Plugin to store encrypted secrets from SSM as Lambda environment variables",
+  "version": "1.0.0",
+  "description": "Serverless Plugin to store encrypted secrets from SSM as a packaged file availble to your lambdas.",
   "main": "index.js",
   "scripts": {
     "test": "mocha \"tests/**/*.test.js\"",
@@ -12,14 +12,14 @@
   "files": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Vacasa/serverless-secret-baker.git"
+    "url": "git+https://github.com/vacasaoss/serverless-secret-baker.git"
   },
   "author": "Vacasa",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Vacasa/serverless-secret-baker/issues"
+    "url": "https://github.com/vacasaoss/serverless-secret-baker/issues"
   },
-  "homepage": "https://github.com/Vacasa/serverless-secret-baker#readme",
+  "homepage": "https://github.com/vacasaoss/serverless-secret-baker#readme",
   "dependencies": {
     "aws-sdk": "^2.386.0",
     "serverless": "1.35.1"
