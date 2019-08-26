@@ -15,7 +15,7 @@ When the Lambda is invoked an AWS SDK call is used to decrypt the stored ciphert
 
 1. Create a custom KMS CMK.
 2. Upload secrets to SSM Parameter Store using the CMK
-3. Install this plugin with `npm install -s serveless-secret-baker`
+3. Install this plugin with `npm install --save-dev serverless-secret-baker`
 4. Add to your `serverless.yml` the following to install the plugin:
 
 ```
