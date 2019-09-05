@@ -37,6 +37,9 @@ jobs:
       - npm-install
       # run tests
       - run: npm run check-version
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ./.npmrc
       - run: npm publish
 
 workflows:
