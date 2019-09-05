@@ -1,4 +1,19 @@
-version: 2
+version: 2.1
+
+commands:
+  npm-install:
+    description: installs npm node_modules with cache
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
 jobs:
   build:
@@ -6,19 +21,38 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - npm-install
       # run tests!
       - run:
           command: npm run test-ci
           environment:
             TEST_REPORTER_DOWNLOAD_URL: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
       - run: npm audit
+      - run: npm publish --dry-run
+  publish:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - npm-install
+      # run tests
+      - run: npm run check-version
+      - run: npm publish
+
+workflows:
+  publish:
+    jobs:
+      - build
+      - approve-publish:
+          type: approval
+          requires:
+            - build
+          filters: &release-tag-only
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
+      - publish:
+          requires:
+            - approve-publish
+          filters: *release-tag-only

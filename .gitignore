@@ -6,7 +6,6 @@ node_modules
 .vscode/
 
 # Other
-package-lock.json
 cc-test-reporter
 coverage/
 .nyc_output/
