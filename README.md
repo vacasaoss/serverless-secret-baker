@@ -41,6 +41,23 @@ provider:
     MYSECRET: /path/to/ssm/secret
 ```
 
+Alternatively, if you would like to reference the secrets by their name in the
+parameter store you can specify the secrets as a list of strings.
+
+```
+provider:
+  environmentSecrets:
+    - MYSECRET
+```
+
+Which is equivalent to:
+
+```
+provider:
+  environmentSecrets:
+    MY_SECRET: MY_SECRET
+```
+
 The plugin will create a json file with all the secrets. In the above example the ciphertext and ARN of the secret located at `path/to/ssm/secret` will be stored in the file under the key `MYSECRET`.
 See example code in [examples](/examples) folder for reference.
 
