@@ -1,10 +1,10 @@
-
-const version = require(`${process.cwd()}/package.json`).version;
+const packageVersion = require(`${process.cwd()}/package.json`).version;
+const packageLockVersion = require(`${process.cwd()}/package-lock.json`).version;
 
 const TAG = process.env.CIRCLE_TAG || '';
 
-if (version !== TAG) {
-  console.error(`version "${version}" does not match tag "${TAG}"`);
+if (packageVersion !== TAG || packageLockVersion !== TAG) {
+  console.error(`Package versions "${packageVersion}", "${packageLockVersion}" do not match tag "${TAG}"`);
   process.exit(1);
 }
 
