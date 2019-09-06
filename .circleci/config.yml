@@ -9,7 +9,7 @@ jobs:
       - run: npm ci
       - persist_to_workspace:
           root: .
-          path: *
+          path: ./*
       # run tests!
       - run:
           command: npm run test-ci
