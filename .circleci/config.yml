@@ -8,8 +8,9 @@ jobs:
       - checkout
       - run: npm ci
       - persist_to_workspace:
-          root: .
-          path: ./*
+          root: /home/circleci/project
+          paths:
+            - '*'
       # run tests!
       - run:
           command: npm run test-ci
@@ -22,7 +23,7 @@ jobs:
       - image: circleci/node:12
     steps:
       - attach_workspace:
-          at: .
+          at: /home/circleci/project
       # run tests
       - run: npm run check-version
       - run:
