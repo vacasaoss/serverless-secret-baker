@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-      - run: npm publish --dry-run
+      - run: npm publish
 
 workflows:
   publish:
@@ -44,8 +44,8 @@ workflows:
             - build
           filters: &release-tag-only
             <<: *release-tag
-            #branches:
-            #  ignore: /.*/
+            branches:
+              ignore: /.*/
       - publish:
           requires:
             - approve-publish
