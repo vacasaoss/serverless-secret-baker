@@ -47,7 +47,7 @@ parameter store you can specify the secrets as a list of strings.
 ```
 provider:
   environmentSecrets:
-    - MYSECRET
+    - MY_SECRET
 ```
 
 Which is equivalent to:
