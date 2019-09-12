@@ -38,27 +38,11 @@ plugins:
 ```
 provider:
   environmentSecrets:
-    MYSECRET: /path/to/ssm/secret
-```
-
-Alternatively, if you would like to reference the secrets by their name in the
-parameter store you can specify the secrets as a list of strings.
-
-```
-provider:
-  environmentSecrets:
     - MY_SECRET
 ```
 
-Which is equivalent to:
+The plugin will create a json file with all the secrets. In the above example the ciphertext and ARN of the secret located at `MY_SECRET` will be stored in the file under the key `MY_SECRET`.
 
-```
-provider:
-  environmentSecrets:
-    MY_SECRET: MY_SECRET
-```
-
-The plugin will create a json file with all the secrets. In the above example the ciphertext and ARN of the secret located at `path/to/ssm/secret` will be stored in the file under the key `MYSECRET`.
 See example code in [examples](/examples) folder for reference.
 
 6. Ensure your Lambda has permission to decrypt the secret at runtime using the CMK. Example:
@@ -76,6 +60,39 @@ iamRoleStatements:
 
 - [Python Example](/examples/handler.py)
 - [Node Example](/examples/handler.js)
+
+## Advanced Configuration
+
+If you would like to name your secrets something different than the path in Parameter Store you can specify a name and path in the configuration like so:
+
+```
+provider:
+  environmentSecrets:
+    MY_SECRET: /path/to/ssm/secret
+```
+
+
+
+Or you can use a more explicit object syntax
+
+```
+provider:
+  environmentSecrets:
+    - name: CUSTOM_SECRET
+      path: a/custom/secret/path 
+```
+
+This allows you to mix styles
+
+```
+provider:
+  environmentSecrets:
+    - MY_SECRET
+    - MY_OTHER_SECRET
+    - name: CUSTOM_SECRET
+      path: a/custom/secret/path 
+```
+
 
 ## Why use this plugin?
 
