@@ -8,7 +8,7 @@ provider:
     - MY_SECRET
     - MY_OTHER_SECRET
     - name: CUSTOM_SECRET
-      path: a/custom/secret/path
+      path: /a/custom/secret/path
   iamRoleStatements:
     - Effect: Allow
       Action:

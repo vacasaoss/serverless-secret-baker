@@ -22,11 +22,19 @@ async function decryptSecret(secretName) {
 }
 
 module.exports.hello = async (event, context) => {
+  const secrets = [
+    "MY_SECRET",
+    "MY_OTHER_SECRET",
+    "CUSTOM_SECRET"
+  ];
+  let output = "";
   try {
-    const secret = await decryptSecret("MYSECRET");
-
-    return `Secret MYSECRET: ${secret}`;
+    for (const secret of secrets) {
+        const value = await decryptSecret(secret);
+        output = output + `Secret ${secret}: ${value}\n`;
+    }
   } catch (error) {
     return `ERROR!: ${error}`;
   }
+  return output;
 };

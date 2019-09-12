@@ -13,9 +13,15 @@ def kms_decrypt(secretName):
     resp = client.decrypt(CiphertextBlob=b64decode(secrets[secretName]["ciphertext"]), EncryptionContext=context)
     return resp['Plaintext'].decode('UTF-8')
 
+SECRETS = [
+    "MY_SECRET",
+    "MY_OTHER_SECRET",
+    "CUSTOM_SECRET",
+]
+
 def hello(event, context):
-    global warm_secret
-    if not warm_secret:
-        warm_secret = kms_decrypt("MYSECRET")
-    print(warm_secret)
-    return "OK"
+    output_builder = []
+    for secret in SECRETS:
+        value = kms_decrypt(secret)
+        output_builder.append("%s : %s\n" % (secret, value))
+    return "".join(output_builder)
