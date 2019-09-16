@@ -5,7 +5,10 @@ provider:
   runtime: nodejs8.10
   region: us-west-2
   environmentSecrets:
-    MYSECRET: test123
+    - MY_SECRET
+    - MY_OTHER_SECRET
+    - name: CUSTOM_SECRET
+      path: /a/custom/secret/path
   iamRoleStatements:
     - Effect: Allow
       Action:

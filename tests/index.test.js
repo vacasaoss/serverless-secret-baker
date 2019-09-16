@@ -85,7 +85,22 @@ describe("ServerlessSecretBaker", () => {
     });
   });
 
-  describe("With Secrets", () => {
+  describe("With secrets in unexpected format", () => {
+    let serverless;
+    let bakedGoods;
+
+    beforeEach(() => {
+      serverless = makeServerless();
+      serverless.service.provider.environmentSecrets = 5;
+      bakedGoods = new ServerlessSecretBaker(serverless);
+    });
+
+    it('should write an empty json object to the output file.', async () => {
+      expect(bakedGoods.writeEnvironmentSecretToFile()).to.be.rejected;
+    });
+  })
+
+  describe("With Secrets Object", () => {
     const expectedSecretName = "MY_SECRET";
     const expectedParameterStoreKey = "PARAMETER STORE KEY";
     const expectedCiphertext = "SECRET VALUE CIPHERTEXT";
@@ -135,6 +150,117 @@ describe("ServerlessSecretBaker", () => {
       await bakedGoods.writeEnvironmentSecretToFile();
       expect(bakedGoods.getParameterFromSsm).to.have.been.calledWith(
         expectedParameterStoreKey
+      );
+    });
+  });
+
+  describe("With Secrets String Array", () => {
+    const expectedSecretName = "MY_SECRET";
+    const expectedCiphertext = "SECRET VALUE CIPHERTEXT";
+    const expectedArn = "SECRET VALUE CIPHERTEXT";
+
+    let serverless;
+    let bakedGoods;
+
+    beforeEach(() => {
+      serverless = makeServerless();
+      serverless.service.provider.environmentSecrets = [
+        expectedSecretName
+      ];
+      bakedGoods = new ServerlessSecretBaker(serverless);
+      sinon.stub(bakedGoods, "getParameterFromSsm");
+      bakedGoods.getParameterFromSsm.resolves({
+        Value: expectedCiphertext,
+        ARN: expectedArn
+      });
+    });
+
+    it("should write ciphertext for secret to secrets file on package", async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      const secretsJson = fs.writeFileAsync.firstCall.args[1];
+      const secrets = JSON.parse(secretsJson);
+
+      expect(secrets[expectedSecretName].ciphertext).to.equal(
+        expectedCiphertext
+      );
+    });
+
+    it("should write ARN from secret to secrets file on package", async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      const secretsJson = fs.writeFileAsync.firstCall.args[1];
+      const secrets = JSON.parse(secretsJson);
+
+      expect(secrets[expectedSecretName].arn).to.equal(expectedArn);
+    });
+
+    it("should throw an error if the parameter cannot be retrieved", async () => {
+      bakedGoods.getParameterFromSsm.reset();
+      bakedGoods.getParameterFromSsm.resolves(undefined);
+      expect(bakedGoods.writeEnvironmentSecretToFile()).to.be.rejected;
+    });
+
+    it("should call getParameterFromSsm with the correct parameter key", async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      expect(bakedGoods.getParameterFromSsm).to.have.been.calledWith(
+          expectedSecretName
+      );
+    });
+  });
+
+  describe("With Secrets Object Array", () => {
+    const expectedSecretName = "MY_SECRET";
+    const expectedParameterStoreKey = "MY_PARAMETER_STORE_KEY"
+    const expectedCiphertext = "SECRET VALUE CIPHERTEXT";
+    const expectedArn = "SECRET VALUE CIPHERTEXT";
+
+    let serverless;
+    let bakedGoods;
+
+    beforeEach(() => {
+      serverless = makeServerless();
+      serverless.service.provider.environmentSecrets = [
+          {
+              name: expectedSecretName,
+              path: expectedParameterStoreKey
+          }
+
+      ];
+      bakedGoods = new ServerlessSecretBaker(serverless);
+      sinon.stub(bakedGoods, "getParameterFromSsm");
+      bakedGoods.getParameterFromSsm.resolves({
+        Value: expectedCiphertext,
+        ARN: expectedArn
+      });
+    });
+
+    it("should write ciphertext for secret to secrets file on package", async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      const secretsJson = fs.writeFileAsync.firstCall.args[1];
+      const secrets = JSON.parse(secretsJson);
+
+      expect(secrets[expectedSecretName].ciphertext).to.equal(
+        expectedCiphertext
+      );
+    });
+
+    it("should write ARN from secret to secrets file on package", async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      const secretsJson = fs.writeFileAsync.firstCall.args[1];
+      const secrets = JSON.parse(secretsJson);
+
+      expect(secrets[expectedSecretName].arn).to.equal(expectedArn);
+    });
+
+    it("should throw an error if the parameter cannot be retrieved", async () => {
+      bakedGoods.getParameterFromSsm.reset();
+      bakedGoods.getParameterFromSsm.resolves(undefined);
+      expect(bakedGoods.writeEnvironmentSecretToFile()).to.be.rejected;
+    });
+
+    it("should call getParameterFromSsm with the correct parameter key", async () => {
+      await bakedGoods.writeEnvironmentSecretToFile();
+      expect(bakedGoods.getParameterFromSsm).to.have.been.calledWith(
+          expectedParameterStoreKey
       );
     });
   });

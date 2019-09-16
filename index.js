@@ -25,12 +25,38 @@ class ServerlessSecretBaker {
     this.serverless = serverless;
   }
 
+  getSecretsConfig() {
+      const environmentSecrets = this.serverless.service.provider.environmentSecrets || [];
+
+      if (Array.isArray(environmentSecrets)) {
+          return environmentSecrets.map((item) => {
+              if (typeof item === 'string') {
+                  return {
+                      name: item,
+                      path: item
+                  }
+              } else {
+                  return item
+              }
+          })
+      } else if (typeof environmentSecrets === 'object') {
+          return Object.entries(environmentSecrets).map(([name, path]) => ({
+              name,
+              path
+          }));
+      }
+      throw new this.serverless.classes.Error(
+          "`environmentSecrets` contained an unexpected value."
+      );
+  }
+
   async writeEnvironmentSecretToFile() {
-    const providerSecrets = this.serverless.service.provider.environmentSecrets || {};
+    const providerSecrets = this.getSecretsConfig()
     const secrets = {};
 
-    for (const name of Object.keys(providerSecrets)) {
-      const param = await this.getParameterFromSsm(providerSecrets[name]);
+
+    for (const {name, path} of providerSecrets) {
+      const param = await this.getParameterFromSsm(path);
 
       if (!param) {
         throw Error(`Unable to load Secret ${name}`);
