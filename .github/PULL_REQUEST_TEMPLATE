@@ -9,3 +9,7 @@ _Enter a description of changes performed here._
 ## Test
 
 _Enter test steps here._
+
+## Checks
+
+- [ ] Has the version number been incremented in package.json and package-lock.json

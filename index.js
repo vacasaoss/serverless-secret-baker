@@ -18,7 +18,13 @@ class ServerlessSecretBaker {
       "before:deploy:function:packageFunction": this.packageSecrets.bind(this),
       "after:deploy:function:packageFunction": this.cleanupPackageSecrets.bind(
         this
-      )
+      ),
+      // For serverless-offline plugin
+      "before:offline:start:init": this.packageSecrets.bind(this),
+      "before:offline:start:end": this.cleanupPackageSecrets.bind(this),
+      // For invoke local
+      "before:invoke:local:invoke": this.packageSecrets.bind(this),
+      "after:invoke:local:invoke": this.cleanupPackageSecrets.bind(this)
     };
 
     this.options = options;
