@@ -11,12 +11,12 @@ management.
 
 <img src="https://user-images.githubusercontent.com/4380779/63980305-fdd0a200-ca6f-11e9-8465-a334b7f0e8f0.png" width="200" />
 
-Secrets are first stored in AWS Parameter Store (aka SSM) for ease of management. At deploytime time this plugin will retrieve the _encrypted_ value of the secrets, store them in a file with associated metadata, and add that file to the serverless deployment package.
+Secrets are first stored in AWS Parameter Store (aka SSM) for ease of management. At deploy time this plugin will retrieve the _encrypted_ value of the secrets, store them in a file with associated metadata, and add that file to the serverless deployment package.
 
 <img src="https://user-images.githubusercontent.com/4380779/63980300-fd380b80-ca6f-11e9-9297-96dbe0334c05.png" width="200" />
 
 
-When the Lambda is invoked an AWS SDK call is used to decrypt the stored ciphertext via KMS directly.
+When the Lambda is invoked, an AWS SDK call is used to decrypt the stored ciphertext via KMS directly.
 
 
 <img src="https://user-images.githubusercontent.com/4380779/63980301-fdd0a200-ca6f-11e9-8bd2-1dc0c12ed771.png" width="200" />
