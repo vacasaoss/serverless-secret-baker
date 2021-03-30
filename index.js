@@ -32,10 +32,12 @@ class ServerlessSecretBaker {
   }
 
   getSecretsConfig() {
-      const environmentSecrets = this.serverless.service.provider.environmentSecrets || [];
+      const customPath = this.serverless.service.custom;
+      const configPath = customPath && customPath.secretBaker;
+      const secrets = configPath || [];
 
-      if (Array.isArray(environmentSecrets)) {
-          return environmentSecrets.map((item) => {
+      if (Array.isArray(secrets)) {
+          return secrets.map((item) => {
               if (typeof item === 'string') {
                   return {
                       name: item,
@@ -45,18 +47,18 @@ class ServerlessSecretBaker {
                   return item
               }
           })
-      } else if (typeof environmentSecrets === 'object') {
-          return Object.entries(environmentSecrets).map(([name, path]) => ({
+      } else if (typeof secrets === 'object') {
+          return Object.entries(secrets).map(([name, path]) => ({
               name,
               path
           }));
       }
       throw new this.serverless.classes.Error(
-          "`environmentSecrets` contained an unexpected value."
+          "Secret Baker configuration contained an unexpected value."
       );
   }
 
-  async writeEnvironmentSecretToFile() {
+  async writeSecretToFile() {
     const providerSecrets = this.getSecretsConfig()
     const secrets = {};
 
@@ -110,7 +112,7 @@ class ServerlessSecretBaker {
     this.serverless.cli.log("Serverless Secrets beginning packaging process");
     this.serverless.service.package.include =
       this.serverless.service.package.include || [];
-    return this.writeEnvironmentSecretToFile().then(() =>
+    return this.writeSecretToFile().then(() =>
       this.serverless.service.package.include.push(secretsFile)
     );
   }

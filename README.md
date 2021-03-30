@@ -36,8 +36,8 @@ plugins:
 5. Add to your `serverless.yml` the following to specify which secrets to retrieve from parameter store:
 
 ```
-provider:
-  environmentSecrets:
+custom:
+  secretBaker:
     - MY_SECRET
 ```
 
@@ -66,9 +66,18 @@ iamRoleStatements:
 If you would like to name your secrets something different than the path in Parameter Store you can specify a name and path in the configuration like so:
 
 ```
-provider:
-  environmentSecrets:
+custom:
+  secretBaker:
+    # Retrieves the latest encrypted secret at the given parameter store path
     MY_SECRET: /path/to/ssm/secret
+```
+
+You can also pin your secrets to specific versions in Parameter Store to have a deterministic secret value:
+```
+custom:
+  secretBaker:
+    # Retrieves the version 2 encrypted secret at the given parameter store path 
+    MY_SECRET: /path/to/ssm/secret:2
 ```
 
 
@@ -76,8 +85,8 @@ provider:
 Or you can use a more explicit object syntax
 
 ```
-provider:
-  environmentSecrets:
+custom:
+  secretBaker:
     - name: CUSTOM_SECRET
       path: a/custom/secret/path 
 ```
@@ -85,8 +94,8 @@ provider:
 This allows you to mix styles
 
 ```
-provider:
-  environmentSecrets:
+custom:
+  secretBaker:
     - MY_SECRET
     - MY_OTHER_SECRET
     - name: CUSTOM_SECRET

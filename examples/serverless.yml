@@ -4,11 +4,6 @@ provider:
   name: aws
   runtime: nodejs8.10
   region: us-west-2
-  environmentSecrets:
-    - MY_SECRET
-    - MY_OTHER_SECRET
-    - name: CUSTOM_SECRET
-      path: /a/custom/secret/path
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -27,3 +22,10 @@ functions:
   test-python:
     runtime: python3.7
     handler: handler.hello
+
+custom:
+  secretBaker:
+    - MY_SECRET
+    - MY_OTHER_SECRET
+    - name: CUSTOM_SECRET
+      path: /a/custom/secret/path
