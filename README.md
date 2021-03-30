@@ -111,4 +111,6 @@ This plugin addresses these concerns by focusing on:
 2. **Performance:** Minimize external dependencies and API calls. The secrets are retrieved directly from KMS. There is no runtime dependency on Parameter Store or Secrets Manager. In addition, the secret can be cached in the Lambda global scope so only a single API call per warmed up lambda is needed.
 3. **Deterministic State:** Complex cache invalidation strategies are not needed. Because the ciphertext is bundled with the lambda at deploy time the secrets can be modified at the source in AWS Parameter Store without effecting the runtime state. In order to apply the new secrets, a new deployment of the Lambdas is required allowing it to go through a CI/CD pipeline to catch any potential errors with secrets and to ensure that _all_ the lambdas get the new secret at the same time.
 
-<img align="center" src="https://user-images.githubusercontent.com/4380779/63980303-fdd0a200-ca6f-11e9-99e8-8c2012b1c90f.png" />
+<p align="center">
+<img src="https://user-images.githubusercontent.com/4380779/63980303-fdd0a200-ca6f-11e9-99e8-8c2012b1c90f.png" width=250 />
+</p>
