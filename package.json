@@ -1,7 +1,7 @@
 {
   "name": "serverless-secret-baker",
-  "version": "1.2.1",
-  "description": "Serverless Plugin to store encrypted secrets from SSM as a packaged file availble to your lambdas.",
+  "version": "2.0.0",
+  "description": "Serverless Framework Plugin for enabling secure and deterministic runtime decryption of secrets",
   "main": "index.js",
   "scripts": {
     "check-version": "node ./scripts/check-version.js",
