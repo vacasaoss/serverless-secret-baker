@@ -31,7 +31,7 @@ module.exports.hello = async (event, context) => {
   try {
     for (const secret of secrets) {
         const value = await decryptSecret(secret);
-        output = output + `Secret ${secret}: ${value}\n`;
+        output = output + `Secret ${secret}: ${value.slice(0, 3)}...\n`;
     }
   } catch (error) {
     return `ERROR!: ${error}`;

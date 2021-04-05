@@ -1,8 +1,9 @@
-service: aws-nodejs # NOTE: update this with your service name
+service: secret-baker-example # NOTE: update this with your service name
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs14.x
+
   region: us-west-2
   iamRoleStatements:
     - Effect: Allow
@@ -20,7 +21,7 @@ functions:
   test-node:
     handler: handler.hello
   test-python:
-    runtime: python3.7
+    runtime: python3.8
     handler: handler.hello
 
 custom:
