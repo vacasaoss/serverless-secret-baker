@@ -1,14 +1,10 @@
-service: aws-nodejs # NOTE: update this with your service name
+service: secret-baker-example # NOTE: update this with your service name
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs14.x
+
   region: us-west-2
-  environmentSecrets:
-    - MY_SECRET
-    - MY_OTHER_SECRET
-    - name: CUSTOM_SECRET
-      path: /a/custom/secret/path
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -25,5 +21,12 @@ functions:
   test-node:
     handler: handler.hello
   test-python:
-    runtime: python3.7
+    runtime: python3.8
     handler: handler.hello
+
+custom:
+  secretBaker:
+    - MY_SECRET
+    - MY_OTHER_SECRET
+    - name: CUSTOM_SECRET
+      path: /a/custom/secret/path

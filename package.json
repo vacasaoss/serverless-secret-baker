@@ -1,7 +1,7 @@
 {
   "name": "serverless-secret-baker",
-  "version": "1.2.1",
-  "description": "Serverless Plugin to store encrypted secrets from SSM as a packaged file availble to your lambdas.",
+  "version": "2.0.0",
+  "description": "Serverless Framework Plugin for enabling secure and deterministic runtime decryption of secrets",
   "main": "index.js",
   "scripts": {
     "check-version": "node ./scripts/check-version.js",
@@ -27,9 +27,9 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^8.0.1",
+    "mocha": "^8.3.2",
     "nyc": "^15.1.0",
-    "serverless": "^1.70.1",
+    "serverless": "^2.31.0",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0"
   }

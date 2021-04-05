@@ -23,5 +23,5 @@ def hello(event, context):
     output_builder = []
     for secret in SECRETS:
         value = kms_decrypt(secret)
-        output_builder.append("%s : %s\n" % (secret, value))
+        output_builder.append("%s : %s...\n" % (secret, value[:3]))
     return "".join(output_builder)
