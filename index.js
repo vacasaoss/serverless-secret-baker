@@ -20,7 +20,7 @@ class ServerlessSecretBaker {
         this
       ),
       // For serverless-offline plugin
-      "before:offline:start:init": this.packageSecrets.bind(this),
+      "before:offline:start": this.packageSecrets.bind(this),
       "before:offline:start:end": this.cleanupPackageSecrets.bind(this),
       // For invoke local
       "before:invoke:local:invoke": this.packageSecrets.bind(this),
