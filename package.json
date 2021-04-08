@@ -1,6 +1,6 @@
 {
   "name": "serverless-secret-baker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Serverless Framework Plugin for enabling secure and deterministic runtime decryption of secrets",
   "main": "index.js",
   "scripts": {
