@@ -59,6 +59,17 @@ describe("ServerlessSecretBaker", () => {
     expect(fs.unlinkSync).to.have.been.calledWith(SECRETS_FILE);
   });
 
+  it("should not clean up the correct secrets file with CLI option to not cleanup", () => {
+    const serverless = makeServerless();
+    const bakedGoods = new ServerlessSecretBaker(serverless, {
+      "secret-baker-cleanup": false,
+    });
+    fs.existsSync.returns(false);
+    fs.existsSync.withArgs(SECRETS_FILE).returns(true);
+    bakedGoods.cleanupPackageSecrets();
+    expect(fs.unlinkSync).to.not.have.been.called;
+  });
+
   it("should not clean up the secrets file if it does not exist", () => {
     const serverless = makeServerless();
     const bakedGoods = new ServerlessSecretBaker(serverless);

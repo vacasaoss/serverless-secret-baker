@@ -7,7 +7,7 @@ const secretsFile = "secret-baker-secrets.json";
 BbPromise.promisifyAll(fs);
 
 class ServerlessSecretBaker {
-  constructor(serverless, options) {
+  constructor(serverless, options = {}) {
     this.hooks = {
       "before:package:createDeploymentArtifacts": this.packageSecrets.bind(
         this
@@ -24,9 +24,12 @@ class ServerlessSecretBaker {
       "before:offline:start:end": this.cleanupPackageSecrets.bind(this),
       // For invoke local
       "before:invoke:local:invoke": this.packageSecrets.bind(this),
-      "after:invoke:local:invoke": this.cleanupPackageSecrets.bind(this)
+      "after:invoke:local:invoke": this.cleanupPackageSecrets.bind(this),
     };
 
+    if (!("secret-baker-cleanup" in options)) {
+      options["secret-baker-cleanup"] = true;
+    }
     this.options = options;
     this.serverless = serverless;
   }
@@ -59,7 +62,7 @@ class ServerlessSecretBaker {
   }
 
   async writeSecretToFile() {
-    const providerSecrets = this.getSecretsConfig()
+    const providerSecrets = this.getSecretsConfig();
     const secrets = {};
 
 
@@ -104,8 +107,10 @@ class ServerlessSecretBaker {
   }
 
   cleanupPackageSecrets() {
-    this.serverless.cli.log(`Cleaning up ${secretsFile}`);
-    if (fs.existsSync(secretsFile)) fs.unlinkSync(secretsFile);
+    if (this.options["secret-baker-cleanup"]) {
+      this.serverless.cli.log(`Cleaning up ${secretsFile}`);
+      if (fs.existsSync(secretsFile)) fs.unlinkSync(secretsFile);
+    }
   }
 
   packageSecrets() {
