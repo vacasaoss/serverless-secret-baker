@@ -8,28 +8,33 @@ BbPromise.promisifyAll(fs);
 
 class ServerlessSecretBaker {
   constructor(serverless, options = {}) {
-    this.hooks = {
+    const pkgHooks = {
       "before:package:createDeploymentArtifacts": this.packageSecrets.bind(
         this
       ),
+      "before:deploy:function:packageFunction": this.packageSecrets.bind(this),
+      // For serverless-offline plugin
+      "before:offline:start": this.packageSecrets.bind(this),
+      // For invoke local
+      "before:invoke:local:invoke": this.packageSecrets.bind(this),
+    };
+
+    const cleanupHooks = {
       "after:package:createDeploymentArtifacts": this.cleanupPackageSecrets.bind(
         this
       ),
-      "before:deploy:function:packageFunction": this.packageSecrets.bind(this),
       "after:deploy:function:packageFunction": this.cleanupPackageSecrets.bind(
         this
       ),
       // For serverless-offline plugin
-      "before:offline:start": this.packageSecrets.bind(this),
       "before:offline:start:end": this.cleanupPackageSecrets.bind(this),
       // For invoke local
-      "before:invoke:local:invoke": this.packageSecrets.bind(this),
       "after:invoke:local:invoke": this.cleanupPackageSecrets.bind(this),
     };
 
-    if (!("secret-baker-cleanup" in options)) {
-      options["secret-baker-cleanup"] = true;
-    }
+    const shouldCleanup = options["secret-baker-cleanup"] != false;
+
+    this.hooks = shouldCleanup ? { ...pkgHooks, ...cleanupHooks } : pkgHooks;
     this.options = options;
     this.serverless = serverless;
   }
@@ -107,10 +112,8 @@ class ServerlessSecretBaker {
   }
 
   cleanupPackageSecrets() {
-    if (this.options["secret-baker-cleanup"]) {
-      this.serverless.cli.log(`Cleaning up ${secretsFile}`);
-      if (fs.existsSync(secretsFile)) fs.unlinkSync(secretsFile);
-    }
+    this.serverless.cli.log(`Cleaning up ${secretsFile}`);
+    if (fs.existsSync(secretsFile)) fs.unlinkSync(secretsFile);
   }
 
   packageSecrets() {
