@@ -32,7 +32,8 @@ class ServerlessSecretBaker {
       "after:invoke:local:invoke": this.cleanupPackageSecrets.bind(this),
     };
 
-    const shouldCleanup = options["secret-baker-cleanup"] != false;
+    const params = this.readParams(options.param || []);
+    const shouldCleanup = params["secret-baker-cleanup"] != false;
 
     this.hooks = shouldCleanup ? { ...pkgHooks, ...cleanupHooks } : pkgHooks;
     this.options = options;

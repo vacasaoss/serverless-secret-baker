@@ -111,7 +111,7 @@ The secrets files, `secret-baker-secrets.json`, is automatically generated at th
 every `serverless deploy`, `serverless package`, `serverless invoke local`, and
 `serverless offline` command. The secrets file, by default, will also be automatically removed
 upon command completion to not leave it in your source directory. 
-If you'd like to preserve the secrets file, pass in the CLI option `--no-secret-baker-cleanup`
+If you'd like to preserve the secrets file, pass in the CLI parameter `secret-baker-cleanup=false`
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/4380779/63980303-fdd0a200-ca6f-11e9-99e8-8c2012b1c90f.png" width=250 />
