@@ -1,6 +1,6 @@
 {
   "name": "serverless-secret-baker",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Serverless Framework Plugin for enabling secure and deterministic runtime decryption of secrets",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "chai-as-promised": "^7.1.1",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0",
-    "serverless": "^2.31.0",
+    "serverless": "^3.29.0",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0"
   }
